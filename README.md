@@ -229,3 +229,40 @@ python scripts/05_error_analysis.py
 - 단일 모델 비교를 넘어 OOF 기반 앙상블 설계
 - 최종 submission 생성과 오차 분석까지 포함한 결과 정리
 - 재현 가능한 프로젝트 구조로 데이터 처리와 모델링 단계 분리
+
+## 📊 Visualization
+
+본 프로젝트에서는 예측 결과를 다양한 관점에서 분석하기 위해 시각화를 수행했습니다.  
+이를 통해 모델이 공간 패턴을 얼마나 잘 반영하는지와 오차 발생 특성을 확인했습니다.
+
+→ 이벤트 로그 기반 좌표 예측 결과를 공간적으로 분석하여 모델의 성능과 한계를 파악했습니다.
+
+<br>
+
+### 1. Actual vs Predicted Final Pass Location / Mean Error Heatmap
+
+<p align="center">
+  <img src="./images/01_actual_vs_pred.png" width="48%" />
+  <img src="./images/02_error_heatmap.png" width="48%" />
+</p>
+
+- **Actual vs Predicted Final Pass Location**  
+  실제 패스 도착 좌표와 예측 좌표를 비교한 시각화입니다. 주요 도착 지점 분포와 예측 결과가 유사한 패턴을 보이는지 확인할 수 있습니다.
+
+- **Mean Error Heatmap by Actual End Location**  
+  실제 패스 도착 위치 기준 평균 오차를 히트맵으로 나타낸 결과입니다. 특정 구역에서 오차가 상대적으로 크게 발생하는 패턴을 확인할 수 있습니다.
+
+<br>
+
+### 2. Error Distribution / Error Vectors
+
+<p align="center">
+  <img src="./images/03_error_distribution.png" width="48%" />
+  <img src="./images/04_error_vectors.png" width="48%" />
+</p>
+
+- **Euclidean Error Distance Distribution**  
+  예측 좌표와 실제 좌표 간 거리 오차 분포입니다. 모델이 어느 수준의 오차 범위에서 가장 많이 분포하는지 확인할 수 있습니다.
+
+- **Error Vectors (Actual → Predicted)**  
+  실제 좌표에서 예측 좌표까지의 오차 방향을 벡터로 시각화한 결과입니다. 오차가 특정 방향으로 치우치는지 확인할 수 있습니다.
