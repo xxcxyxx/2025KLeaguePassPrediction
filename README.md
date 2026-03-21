@@ -1,6 +1,6 @@
 # 2025 K League Pass Prediction
 
-K리그 경기 이벤트 로그를 활용해 마지막 패스 도착 좌표(`end_x`, `end_y`)를 예측한 프로젝트입니다.  
+K리그 경기 이벤트 로그를 활용해 마지막 패스 도착 좌표(`end_x`, `end_y`)를 예측하고, 공간 패턴과 오차 특성을 분석한 프로젝트입니다.
 데이콘 대회를 바탕으로 진행했으며, 단순 제출 코드 재현이 아니라 이벤트 단위 원본 데이터를 `game_episode` 단위 학습 데이터로 재구성하고, 모델 비교, OOF 기반 가중 앙상블, 오차 분석까지 포함한 포트폴리오형 프로젝트로 확장했습니다.
 
 - Competition: [데이콘 | K리그 경기 패스 좌표 예측 AI 경진대회](https://dacon.io/competitions/official/236647/overview/description)
@@ -175,8 +175,47 @@ CatBoost 단일 모델 대비, OOF 기반 가중 앙상블을 통해 validation 
 
 ---
 
+## 9.  Visualization
 
-## 9. Project Structure
+본 프로젝트에서는 예측 결과를 다양한 관점에서 분석하기 위해 시각화를 수행했습니다.  
+이를 통해 모델이 공간 패턴을 얼마나 잘 반영하는지와 오차 발생 특성을 확인했습니다.
+특히 공간적 위치에 따른 오차 패턴을 분석하여 모델의 취약 구간을 파악했습니다.
+
+→ 이벤트 로그 기반 좌표 예측 결과를 공간적으로 분석하여 모델의 성능과 한계를 파악했습니다.
+
+<br>
+
+### 9.1. Actual vs Predicted Final Pass Location / Mean Error Heatmap
+
+<p align="center">
+  <img src="./images/01_actual_vs_pred.png" width="48%" />
+  <img src="./images/02_error_heatmap.png" width="48%" />
+</p>
+
+- **Actual vs Predicted Final Pass Location**  
+  실제 패스 도착 좌표와 예측 좌표를 비교한 시각화입니다. 주요 도착 지점 분포와 예측 결과가 유사한 패턴을 보이는지 확인할 수 있습니다.
+
+- **Mean Error Heatmap by Actual End Location**  
+  실제 패스 도착 위치 기준 평균 오차를 히트맵으로 나타낸 결과입니다. 특정 구역에서 오차가 상대적으로 크게 발생하는 패턴을 확인할 수 있습니다.
+
+<br>
+
+### 9.2. Error Distribution / Error Vectors
+
+<p align="center">
+  <img src="./images/03_error_distribution.png" width="48%" />
+  <img src="./images/04_error_vectors.png" width="48%" />
+</p>
+
+
+
+- **Euclidean Error Distance Distribution**  
+  예측 좌표와 실제 좌표 간 거리 오차 분포입니다. 모델이 어느 수준의 오차 범위에서 가장 많이 분포하는지 확인할 수 있습니다.
+
+- **Error Vectors (Actual → Predicted)**  
+  실제 좌표에서 예측 좌표까지의 오차 방향을 벡터로 시각화한 결과입니다. 오차가 특정 방향으로 치우치는지 확인할 수 있습니다.
+
+## 10. Project Structure
 
 ```text
 2025KLeaguePassPrediction/
@@ -194,11 +233,16 @@ CatBoost 단일 모델 대비, OOF 기반 가중 앙상블을 통해 validation 
 │  └─ 05_error_analysis.py
 ├─ README.md
 └─ requirements.txt
+├─ images/
+│  ├─ 01_actual_vs_pred.png
+│  ├─ 02_error_heatmap.png
+│  ├─ 03_error_distribution.png
+│  └─ 04_error_vectors.png
 ```
 
 ---
 
-## 10. Run
+## 11. Run
 
 ```bash
 python scripts/01_eda.py
@@ -210,7 +254,7 @@ python scripts/05_error_analysis.py
 
 ---
 
-## 11. Outputs
+## 12. Outputs
 
 주요 산출물은 다음과 같습니다.
 
@@ -223,46 +267,11 @@ python scripts/05_error_analysis.py
 
 ---
 
-## 12. Key Takeaways
+## 13. Key Takeaways
 
 - 이벤트 단위 raw log를 예측 가능한 episode 단위 데이터로 재구성
 - 단일 모델 비교를 넘어 OOF 기반 앙상블 설계
 - 최종 submission 생성과 오차 분석까지 포함한 결과 정리
 - 재현 가능한 프로젝트 구조로 데이터 처리와 모델링 단계 분리
 
-## 📊 Visualization
 
-본 프로젝트에서는 예측 결과를 다양한 관점에서 분석하기 위해 시각화를 수행했습니다.  
-이를 통해 모델이 공간 패턴을 얼마나 잘 반영하는지와 오차 발생 특성을 확인했습니다.
-
-→ 이벤트 로그 기반 좌표 예측 결과를 공간적으로 분석하여 모델의 성능과 한계를 파악했습니다.
-
-<br>
-
-### 1. Actual vs Predicted Final Pass Location / Mean Error Heatmap
-
-<p align="center">
-  <img src="./images/01_actual_vs_pred.png" width="48%" />
-  <img src="./images/02_error_heatmap.png" width="48%" />
-</p>
-
-- **Actual vs Predicted Final Pass Location**  
-  실제 패스 도착 좌표와 예측 좌표를 비교한 시각화입니다. 주요 도착 지점 분포와 예측 결과가 유사한 패턴을 보이는지 확인할 수 있습니다.
-
-- **Mean Error Heatmap by Actual End Location**  
-  실제 패스 도착 위치 기준 평균 오차를 히트맵으로 나타낸 결과입니다. 특정 구역에서 오차가 상대적으로 크게 발생하는 패턴을 확인할 수 있습니다.
-
-<br>
-
-### 2. Error Distribution / Error Vectors
-
-<p align="center">
-  <img src="./images/03_error_distribution.png" width="48%" />
-  <img src="./images/04_error_vectors.png" width="48%" />
-</p>
-
-- **Euclidean Error Distance Distribution**  
-  예측 좌표와 실제 좌표 간 거리 오차 분포입니다. 모델이 어느 수준의 오차 범위에서 가장 많이 분포하는지 확인할 수 있습니다.
-
-- **Error Vectors (Actual → Predicted)**  
-  실제 좌표에서 예측 좌표까지의 오차 방향을 벡터로 시각화한 결과입니다. 오차가 특정 방향으로 치우치는지 확인할 수 있습니다.
